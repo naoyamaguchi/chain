@@ -1,2 +1,3 @@
 # chain
-Middleware chaining for go
+Middleware chaining for go.
+
