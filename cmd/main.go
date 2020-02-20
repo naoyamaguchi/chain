@@ -11,14 +11,6 @@ import (
 	"github.com/naoyamaguchi/chain/cmd/middleware"
 )
 
-// func middleware1(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-// 		fmt.Println("[START] middleware")
-// 		next.ServeHTTP(w, r)
-// 		fmt.Println("[END] middleware")
-// 	})
-// }
-
 type handler func(http.Handler) http.Handler
 
 // Server is server struct
