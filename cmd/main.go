@@ -8,22 +8,22 @@ import (
 	"time"
 
 	"github.com/naoyamaguchi/chain"
+	"github.com/naoyamaguchi/chain/cmd/middleware"
 )
 
-func middleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("[START] middleware1")
-		next.ServeHTTP(w, r)
-		fmt.Println("[END] middleware1")
-	})
-}
+// func middleware1(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		fmt.Println("[START] middleware")
+// 		next.ServeHTTP(w, r)
+// 		fmt.Println("[END] middleware")
+// 	})
+// }
 
 type handler func(http.Handler) http.Handler
 
 // Server is server struct
 type Server struct {
 	path []string
-	// handler
 }
 
 func NewServer() (*Server, error) {
@@ -45,15 +45,14 @@ func (server *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (server *Server) Run() {
-	// chainedServer := chain.NewChain(middleware).Then(server)
-
+	// Chain middleware
 	c := chain.NewChain(server)
-	c.Chain(middleware)
+	c.Chain(middleware.Example1)
+	c.Chain(middleware.Example2)
 
 	s := &http.Server{
-		Addr: ":8080",
-		// Handler: chainedServer,
-		Handler:      c,
+		Addr:         ":8080",
+		Handler:      c.Handler,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
@@ -68,9 +67,5 @@ func main() {
 
 	log.Println("Server start port 8080...")
 	server.Run()
-
-	// c := chain.NewChain(server)
-	// c.Chain(middleware.Example)
-	// c.Run()
 
 }
