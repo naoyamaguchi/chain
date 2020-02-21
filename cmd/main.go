@@ -11,8 +11,6 @@ import (
 	"github.com/naoyamaguchi/chain/cmd/middleware"
 )
 
-type handler func(http.Handler) http.Handler
-
 // Server is server struct
 type Server struct {
 	path []string
@@ -20,7 +18,7 @@ type Server struct {
 
 func NewServer() (*Server, error) {
 	server := &Server{
-		path: []string{"^/hoge(.*)$", "^/piyo(.*)$", "^/guga(.*)$"},
+		path: []string{"^/hoge$", "^/piyo(.*)$", "^/guga(.*)$"},
 	}
 	return server, nil
 }
